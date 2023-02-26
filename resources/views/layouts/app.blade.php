@@ -16,7 +16,8 @@
     </head>
     <body class="font-sans text-base antialiased bg-base-100">
         
-        <div class="navbar bg-neutral text-neutral-content">
+        <div class="w-11/12 m-auto my-4 rounded-lg navbar bg-neutral text-neutral-content">
+            {{-- Mobile nav drop down menu and left logo items --}}
             <div class="navbar-start">
               <div class="dropdown">
                 <label tabindex="0" class="btn btn-ghost lg:hidden">
@@ -37,10 +38,14 @@
                   <li><a>Item 3</a></li>
                 </ul>
               </div>
-              <a class="text-xl normal-case btn btn-ghost" href="{{ route('home') }}"><img src="{{ asset('storage/images/Logo-Dark-Red-zenor-225x90.png') }}" width="125px" alt="JonZenor.com"></a>
+
+              {{-- Left hand logo items --}}
+              <a class="text-xl normal-case btn btn-ghost" href="{{ route('home') }}"><img src="{{ asset('storage/images/Logo-Dark-Red-zenor-225x90.png') }}" width="125px" alt="JonZenor.com" class="drop-shadow-xl"></a>
             </div>
+
+            {{-- Normal desktop nav menu --}}
             <div class="hidden navbar-center lg:flex">
-              <ul class="px-1 menu menu-horizontal">
+              <ul class="px-1 menu menu-horizontal bg-neutral">
                 <li><a>Item 1</a></li>
                 <li tabindex="0">
                   <a>
@@ -48,15 +53,24 @@
                     <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
                   </a>
                   <ul class="p-2">
-                    <li><a>Submenu 1</a></li>
-                    <li><a>Submenu 2</a></li>
+                    <li class="rounded-md bg-base-300 text-base-content hover:text-neutral-content hover:bg-neutral"><a>Submenu 1</a></li>
+                    <li class="rounded-md bg-base-300 text-base-content hover:text-neutral-content hover:bg-neutral"><a>Submenu 2</a></li>
                   </ul>
                 </li>
                 <li><a>Item 3</a></li>
               </ul>
             </div>
+
+            {{-- Right hand nav elements for all sizes--}}
             <div class="navbar-end">
-              <a class="btn">Get started</a>
+              @guest
+                <a class="btn" href="{{ route('login') }}">LOGIN</a>
+              @endguest
+
+              @auth
+                
+              @endauth
+             
             </div>
           </div>
 
