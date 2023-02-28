@@ -1,17 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
+    <div class="w-10/12 mx-auto my-4">
+    
+        <x-info-card :title="__('Life Log Stats')">
+            
+            <table class="table w-full">
+                <tbody>
+                    <tr>
+                        <td>Log Entries</td>
+                        <td>###</td>
+                        <td><a href="{{ route('lifelog.index') }}" class="link link-primary">Manage</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="justify-end my-4 card-actions">
+                <a href="{{ route('lifelog.create') }}" class="btn btn-primary">Add Log Entry</a>
             </div>
-        </div>
+        </x-info-card>
     </div>
+    
 </x-app-layout>
