@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\LifeLog;
 
 class ProfileController extends Controller
 {
@@ -56,5 +57,14 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function dashboard()
+    {
+        $lifeLog['messageCount'] = LifeLog::count();
+
+        return view('dashboard', [
+            'lifeLog' => $lifeLog,
+        ]);
     }
 }

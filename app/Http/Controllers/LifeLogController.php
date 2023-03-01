@@ -54,7 +54,13 @@ class LifeLogController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $editLog = LifeLog::find($id);
+        $lifeLogs = LifeLog::all();
+
+        return view('lifelog.index', [
+            'lifeLogs' => $lifeLogs,
+            'editLifeLog' => $editLog,
+        ]);
     }
 
     /**
@@ -62,7 +68,12 @@ class LifeLogController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $lifeLog = LifeLog::find($id);
+        $lifeLog->date = Carbon::createFromFormat('n/j/Y', $request->date)->format('Y-m-d');
+        $lifeLog->message = $request->message;
+        $lifeLog->save();
+
+        return redirect()->route('lifelog.index');
     }
 
     /**

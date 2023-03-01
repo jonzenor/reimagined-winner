@@ -7,7 +7,7 @@
     </x-slot>
     
     <div class="w-10/12 mx-auto my-4">
-        <table class="table table-compact table-zebra">
+        <table class="table table-zebra">
 
             <thead>
                 <tr>
@@ -24,14 +24,34 @@
                         <td>{{ $lifeLog->id }}</td>
                         <td>{{ date('m/d/Y', strtotime($lifeLog->date)) }}</td>
                         <td>{{ $lifeLog->message }}</td>
-                        <td>&nbsp;</td>
+                        <td><a href="{{ route('lifelog.edit', $lifeLog->id) }}" class="link link-accent">Edit</a></td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <x-page-buttons :secondaryLink="route('dashboard')" :secondaryText="__('Back to Dashboard')" />
+        @isset($editLifeLog)
+            <form action="{{ route('lifelog.update', $editLifeLog->id) }}" method="post">
+                @csrf
 
+                <table class="table w-full">
+                    <thead>
+                        <tr>
+                            <td colspan="2">{{ __('Edit Life Log Entry') }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><x-forms.labeled-input name="date" label="Date" :value="date('m/d/Y', strtotime($editLifeLog->date))" /></td>
+                            <td><x-forms.labeled-input name="message" label="Message" :value="$editLifeLog->message" /></td>
+                            <td><x-forms.submit-button text="Update" /></td>
+                        </tr>
+                    </tbody>    
+                </table>
+            </form>
+        @endisset
+
+        <x-page-buttons :secondaryLink="route('dashboard')" :secondaryText="__('Back to Dashboard')" />
     </div>
     
 </x-app-layout>

@@ -19,9 +19,8 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ProfileController::class, 'dashboard'])->name('dashboard')
+->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,6 +32,8 @@ Route::name('lifelog.')->middleware('auth')->prefix('lifelog')->group(function (
     Route::get('manage', [LifeLogController::class, 'index'])->name('index');
     Route::get('create', [LifeLogController::class, 'create'])->name('create');
     Route::post('save', [LifeLogController::class, 'store'])->name('save');
+    Route::get('edit/{id}', [LifeLogController::class, 'edit'])->name('edit');
+    Route::post('update/{id}', [LifeLogController::class, 'update'])->name('update');
 });
 
 require __DIR__.'/auth.php';

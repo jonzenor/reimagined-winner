@@ -13,7 +13,7 @@
                 <tbody>
                     <tr>
                         <td>Log Entries</td>
-                        <td>###</td>
+                        <td>{{ $lifeLog['messageCount'] }}</td>
                         <td><a href="{{ route('lifelog.index') }}" class="link link-primary">Manage</a></td>
                     </tr>
                 </tbody>
