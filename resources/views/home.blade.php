@@ -2,7 +2,7 @@
 
   <div class="w-10/12 mx-auto my-4">
     @foreach ($lifeLogs as $lifeLog)
-      <div class="shadow-lg alert bg-primary text-primary-content">
+      <div class="my-4 shadow-lg alert bg-primary text-primary-content">
         <div>
           (icon)
           <div>
