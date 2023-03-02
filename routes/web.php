@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LifeLogController;
 use Illuminate\Support\Facades\Route;
@@ -15,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::get('/dashboard', [ProfileController::class, 'dashboard'])->name('dashboard')
 ->middleware(['auth', 'verified']);
@@ -30,7 +29,7 @@ Route::middleware('auth')->group(function () {
 
 Route::name('lifelog.')->middleware('auth')->prefix('lifelog')->group(function () {
     Route::get('manage', [LifeLogController::class, 'index'])->name('index');
-    Route::get('create', [LifeLogController::class, 'create'])->name('create');
+    Route::get('create', [LifeLogController::class, 'index'])->name('create');
     Route::post('save', [LifeLogController::class, 'store'])->name('save');
     Route::get('edit/{id}', [LifeLogController::class, 'edit'])->name('edit');
     Route::post('update/{id}', [LifeLogController::class, 'update'])->name('update');

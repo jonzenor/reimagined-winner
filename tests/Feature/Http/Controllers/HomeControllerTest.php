@@ -28,4 +28,12 @@ class HomeControllerTest extends TestCase
 
         $result->assertStatus(200);
     }
+
+    public function test_home_page_loads()
+    {
+        $result = $this->get(route('home'));
+
+        $result->assertStatus(200);
+        $result->assertViewIs('home');
+    }
 }

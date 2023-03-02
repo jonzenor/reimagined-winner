@@ -21,6 +21,7 @@ class LifeLogControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    // Life Log Dashboard Panel
     public function test_life_log_control_panel_shows_in_dashboard()
     {
         $user = $this->createUser();
@@ -39,6 +40,18 @@ class LifeLogControllerTest extends TestCase
         $result->assertSee(route('lifelog.create'));
     }
 
+    public function test_life_log_count_shows_on_dashboard()
+    {
+        $user = $this->createUser();
+        $this->createLifeLog();
+        $this->createLifeLog();
+
+        $result = $this->actingAs($user)->get(route('dashboard'));
+
+        $result->assertSeeInOrder([__('Log Entries'), "2", __('Manage')], false);
+    }
+
+    // New Life Log
     public function test_life_log_new_page_loads()
     {
         $user = $this->createUser();
@@ -46,7 +59,7 @@ class LifeLogControllerTest extends TestCase
         $result = $this->actingAs($user)->get(route('lifelog.create'));
 
         $result->assertStatus(200);
-        $result->assertViewIs('lifelog.create');
+        $result->assertViewIs('lifelog.index');
     }
 
     public function test_life_log_create_page_has_creation_form()
@@ -69,6 +82,7 @@ class LifeLogControllerTest extends TestCase
         $result->assertSee(__('Back to Dashboard'));
     }
 
+    // Life Log Save New
     public function test_life_log_save_form_saves_data()
     {
         $user = $this->createUser();
@@ -95,6 +109,7 @@ class LifeLogControllerTest extends TestCase
         $result->assertRedirect(route('lifelog.index'));
     }
 
+    // Life Log Index / Management
     public function test_life_log_manage_page_displays_view()
     {
         $user = $this->createUser();
@@ -128,17 +143,7 @@ class LifeLogControllerTest extends TestCase
         $result->assertSee($data['message']);
     }
 
-    public function test_life_log_count_shows_on_dashboard()
-    {
-        $user = $this->createUser();
-        $this->createLifeLog();
-        $this->createLifeLog();
-
-        $result = $this->actingAs($user)->get(route('dashboard'));
-
-        $result->assertSeeInOrder([__('Log Entries'), "2", __('Manage')], false);
-    }
-
+    // Life Log Edit Page
     public function test_life_log_manage_page_has_link_to_edit_message()
     {
         $user = $this->createUser();
@@ -161,6 +166,7 @@ class LifeLogControllerTest extends TestCase
         $result->assertSeeInOrder(["form", 'name="date"', "value=", date('m/d/Y', strtotime($lifeLog->date)), "/form"], false);
     }
 
+    // Life Log Update Record
     public function test_life_log_update_page_updates_record()
     {
         $user = $this->createUser();
@@ -178,6 +184,18 @@ class LifeLogControllerTest extends TestCase
         $this->assertDatabaseHas('life_logs', $data);
     }
 
+    // Life Log on Home Page
+    public function test_life_log_entries_show_on_home_page()
+    {
+        $lifeLog = $this->createLifeLog();
+
+        $result = $this->get(route('home'));
+
+        $result->assertSee($lifeLog->message);
+        $result->assertSee(date('m/d/Y', strtotime($lifeLog->date)));
+    }
+
+    // Helper Functions
     private function createLifeLog()
     {
         return LifeLog::factory()->create();

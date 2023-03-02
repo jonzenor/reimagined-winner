@@ -49,6 +49,26 @@
                     </tbody>    
                 </table>
             </form>
+        @else
+            <form action="{{ route('lifelog.save') }}" method="post">
+                @csrf
+
+                <table class="table w-full">
+                    <thead>
+                        <tr>
+                            <td colspan="2">{{ __('Create Life Log Entry') }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><x-forms.labeled-input name="date" label="Date" :value="date('m/d/Y')" /></td>
+                            <td><x-forms.labeled-input name="message" label="Message" /></td>
+                            <td><x-forms.submit-button text="Add Life Log" /></td>
+                        </tr>
+                    </tbody>    
+                </table>
+            </form>
+
         @endisset
 
         <x-page-buttons :secondaryLink="route('dashboard')" :secondaryText="__('Back to Dashboard')" />

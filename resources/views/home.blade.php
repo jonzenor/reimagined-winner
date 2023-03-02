@@ -1,12 +1,17 @@
 <x-app-layout>
-    <div class="form-control">
-        <label class="label">
-          <span class="label-text">vertical</span>
-        </label> 
-        <label class="input-group">
-          <span class="bg-primary">Email</span> 
-          <input type="text" placeholder="info@site.com" class="input input-bordered">
-        </label>
-    </div>
+
+  <div class="w-10/12 mx-auto my-4">
+    @foreach ($lifeLogs as $lifeLog)
+      <div class="shadow-lg alert bg-primary text-primary-content">
+        <div>
+          (icon)
+          <div>
+            <span>{{ $lifeLog->message }}</span><br />
+            <div class="text-xs">{{ date('m/d/Y', strtotime($lifeLog->date)) }}</div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+  </div>
 
 </x-app-layout>

@@ -25,7 +25,7 @@ class LifeLogController extends Controller
      */
     public function create()
     {
-        return view('lifelog.create');
+        return view('lifelog.index');
     }
 
     /**
