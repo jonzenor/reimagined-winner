@@ -38,6 +38,7 @@ Route::name('lifelog.')->middleware('auth')->prefix('lifelog')->group(function (
 Route::name('lifelogcategory.')->middleware('auth')->prefix('lifelogcategory')->group(function () {
     Route::get('manage', [LifeLogController::class, 'categoryIndex'])->name('index');
     Route::post('save', [LifeLogController::class, 'categoryStore'])->name('save');
+    Route::post('edit/{id}', [LifeLogController::class, 'categoryEdit'])->name('edit');
 });
 
 require __DIR__.'/auth.php';

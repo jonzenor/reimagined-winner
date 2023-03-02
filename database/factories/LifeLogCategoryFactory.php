@@ -18,6 +18,8 @@ class LifeLogCategoryFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'icon' => "fa-solid fa-house",
+            'color' => 'info',
         ];
     }
 }

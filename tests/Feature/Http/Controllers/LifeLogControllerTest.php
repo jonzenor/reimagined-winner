@@ -231,6 +231,16 @@ class LifeLogControllerTest extends TestCase
         $result->assertSee($category->name);
     }
 
+    public function test_life_log_categories_have_edit_button()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+
+        $result = $this->actingAs($user)->get(route('lifelogcategory.index'));
+
+        $result->assertSee(route('lifelogcategory.edit', $category->id));
+    }
+
     // New Category
     public function test_life_log_category_managemnt_has_create_form()
     {
@@ -247,6 +257,8 @@ class LifeLogControllerTest extends TestCase
     {
         $user = $this->createUser();
         $data['name'] = 'This is a test';
+        $data['icon'] = 'fa-solid fa-house';
+        $data['color'] = 'primary';
 
         $result = $this->actingAS($user)->post(route('lifelogcategory.save'), $data);
 
@@ -257,10 +269,23 @@ class LifeLogControllerTest extends TestCase
     {
         $user = $this->createUser();
         $data['name'] = 'This is a test';
+        $data['icon'] = 'fa-solid fa-house';
+        $data['color'] = 'primary';
 
         $result = $this->actingAS($user)->post(route('lifelogcategory.save'), $data);
 
         $result->assertRedirect(route('lifelogcategory.index'));
+    }
+
+    // Category Edit Page
+    public function life_log_category_test_page_loads()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+
+        $result = $this->actingAs($user)->get(route('lifelogcategory.edit', $category->id));
+
+        $result->see();
     }
 
     // Helper Functions

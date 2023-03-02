@@ -7,26 +7,20 @@
     </x-slot>
     
     <div class="w-10/12 mx-auto my-4">
-        <table class="table table-zebra">
-
-            <thead>
-                <tr>
-                    <td>ID</td>
-                    <td>Message</td>
-                    {{-- <td>Action</td> --}}
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach ($categories as $category)
-                    <tr>
-                        <td>{{ $category->id }}</td>
-                        <td>{{ $category->name }}</td>
-                        {{-- <td><a href="{{ route('lifelog.edit', $lifeLog->id) }}" class="link link-accent">Edit</a></td> --}}
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @foreach ($categories as $category)
+            <div class="shadow-lg alert alert-{{ $category->color }} bg-{{ $category->color }} text-{{ $category->color }}-content my-4">
+                <div>
+                    <i class="{{ $category->icon }}"></i>
+                    <div>
+                        <span>{{ $category->name }}</span>
+                        <div class="text-xs">ID: {{ $category->id }}</div>
+                    </div>
+                </div>
+                <div class="flex-none">
+                    <a href="{{ route('lifelogcategory.edit', $category->id) }}" class="btn btn-sm">{{ __('Edit Category') }}</a>
+                </div>
+            </div>
+        @endforeach
 
         {{-- @isset($editLifeLog)
             <form action="{{ route('lifelog.update', $editLifeLog->id) }}" method="post">
@@ -53,14 +47,18 @@
 
                 <table class="table w-full">
                     <thead>
-                        <tr>
-                            <td colspan="2">{{ __('Create Life Log Entry') }}</td>
+                        <tr class="bg-accent text-accent-content">
+                            <td colspan="3" class="bg-accent">{{ __('Create Life Log Entry') }}</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><x-forms.labeled-input name="name" label="Category Name" /></td>
-                            <td><x-forms.submit-button text="Add Category" /></td>
+                            <td><x-forms.input-text name="icon" label="Icon Class" /></td>
+                            <td><x-forms.input-text name="color" label="Color Class" /></td>
+                            <td><x-forms.input-text name="name" label="Category Name" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><x-forms.submit-button text="Add Category" /></td>
                         </tr>
                     </tbody>    
                 </table>

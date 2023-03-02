@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('life_log_categories', function (Blueprint $table) {
             $table->id();
             $table->text('name');
+            $table->text('icon');
+            $table->text('color');
             $table->timestamps();
         });
     }

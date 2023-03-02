@@ -99,6 +99,8 @@ class LifeLogController extends Controller
         $category = new LifeLogCategory;
 
         $category->name = $request->name;
+        $category->icon = $request->icon;
+        $category->color = $request->color;
         $category->save();
 
         return redirect()->route('lifelogcategory.index');
