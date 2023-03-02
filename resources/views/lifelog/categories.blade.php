@@ -12,32 +12,30 @@
             <thead>
                 <tr>
                     <td>ID</td>
-                    <td>Date</td>
                     <td>Message</td>
-                    <td>Action</td>
+                    {{-- <td>Action</td> --}}
                 </tr>
             </thead>
 
             <tbody>
-                @foreach ($lifeLogs as $lifeLog)
+                @foreach ($categories as $category)
                     <tr>
-                        <td>{{ $lifeLog->id }}</td>
-                        <td>{{ date('m/d/Y', strtotime($lifeLog->date)) }}</td>
-                        <td>{{ $lifeLog->message }}</td>
-                        <td><a href="{{ route('lifelog.edit', $lifeLog->id) }}" class="link link-accent">Edit</a></td>
+                        <td>{{ $category->id }}</td>
+                        <td>{{ $category->name }}</td>
+                        {{-- <td><a href="{{ route('lifelog.edit', $lifeLog->id) }}" class="link link-accent">Edit</a></td> --}}
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        @isset($editLifeLog)
+        {{-- @isset($editLifeLog)
             <form action="{{ route('lifelog.update', $editLifeLog->id) }}" method="post">
                 @csrf
 
                 <table class="table w-full">
                     <thead>
                         <tr>
-                            <td colspan="3">{{ __('Edit Life Log Entry') }}</td>
+                            <td colspan="2">{{ __('Edit Life Log Entry') }}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,8 +47,8 @@
                     </tbody>    
                 </table>
             </form>
-        @else
-            <form action="{{ route('lifelog.save') }}" method="post">
+        @else --}}
+            <form action="{{ route('lifelogcategory.save') }}" method="post">
                 @csrf
 
                 <table class="table w-full">
@@ -61,15 +59,14 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><x-forms.labeled-input name="date" label="Date" :value="date('m/d/Y')" /></td>
-                            <td><x-forms.labeled-input name="message" label="Message" /></td>
-                            <td><x-forms.submit-button text="Add Life Log" /></td>
+                            <td><x-forms.labeled-input name="name" label="Category Name" /></td>
+                            <td><x-forms.submit-button text="Add Category" /></td>
                         </tr>
                     </tbody>    
                 </table>
             </form>
 
-        @endisset
+        {{-- @endisset --}}
 
         <x-page-buttons :secondaryLink="route('dashboard')" :secondaryText="__('Back to Dashboard')" />
     </div>

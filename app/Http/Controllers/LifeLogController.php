@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LifeLog;
+use App\Models\LifeLogCategory;
 use Carbon\Carbon;
 
 class LifeLogController extends Controller
@@ -82,5 +83,24 @@ class LifeLogController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function categoryIndex()
+    {
+        $categories = LifeLogCategory::all();
+
+        return view('lifelog.categories', [
+            'categories' => $categories,
+        ]);
+    }
+
+    public function categoryStore(Request $request)
+    {
+        $category = new LifeLogCategory;
+
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect()->route('lifelogcategory.index');
     }
 }

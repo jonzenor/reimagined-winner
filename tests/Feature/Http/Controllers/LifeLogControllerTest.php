@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\LifeLog;
+use App\Models\LifeLogCategory;
 
 class LifeLogControllerTest extends TestCase
 {
@@ -195,9 +196,81 @@ class LifeLogControllerTest extends TestCase
         $result->assertSee(date('m/d/Y', strtotime($lifeLog->date)));
     }
 
+    // *******************
+    // Life Log Categories
+    // *******************
+
+    // Dashboard Panel
+    public function test_life_log_categories_panel_shows_in_dashboard()
+    {
+        $user = $this->createUser();
+
+        $result = $this->actingAs($user)->get(route('dashboard'));
+
+        $result->assertSee(route('lifelogcategory.index'));
+    }
+
+    // Management Page
+    public function test_life_log_categories_management_page_loads()
+    {
+        $user = $this->createUser();
+
+        $result = $this->actingAs($user)->get(route('lifelogcategory.index'));
+
+        $result->assertStatus(200);
+        $result->assertViewIs('lifelog.categories');
+    }
+
+    public function test_life_log_categories_show_on_management_page()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+
+        $result = $this->actingAs($user)->get(route('lifelogcategory.index'));
+
+        $result->assertSee($category->name);
+    }
+
+    // New Category
+    public function test_life_log_category_managemnt_has_create_form()
+    {
+        $user = $this->createUser();
+
+        $result = $this->actingAs($user)->get(route('lifelogcategory.index'));
+
+        $result->assertSee(route('lifelogcategory.save'));
+        $result->assertSee('input type="submit"', false);
+    }
+
+    // Save New Category
+    public function test_life_log_category_create_form_saves_to_database()
+    {
+        $user = $this->createUser();
+        $data['name'] = 'This is a test';
+
+        $result = $this->actingAS($user)->post(route('lifelogcategory.save'), $data);
+
+        $this->assertDatabaseHas('life_log_categories', $data);
+    }
+
+    public function test_life_log_category_create_form_redirects_to_index()
+    {
+        $user = $this->createUser();
+        $data['name'] = 'This is a test';
+
+        $result = $this->actingAS($user)->post(route('lifelogcategory.save'), $data);
+
+        $result->assertRedirect(route('lifelogcategory.index'));
+    }
+
     // Helper Functions
     private function createLifeLog()
     {
         return LifeLog::factory()->create();
+    }
+
+    private function createLifeLogCategory()
+    {
+        return LifeLogCategory::factory()->create();
     }
 }
