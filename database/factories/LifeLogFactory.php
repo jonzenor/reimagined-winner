@@ -32,4 +32,13 @@ class LifeLogFactory extends Factory
             ];
         });
     }
+
+    public function date($date)
+    {
+        return $this->state(function (array $attributes) use ($date) {
+            return [
+                'date' => $date,
+            ];
+        });
+    }
 }

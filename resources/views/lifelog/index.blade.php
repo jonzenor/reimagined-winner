@@ -7,28 +7,20 @@
     </x-slot>
     
     <div class="w-10/12 mx-auto my-4">
-        <table class="table table-zebra">
-
-            <thead>
-                <tr>
-                    <td>ID</td>
-                    <td>Date</td>
-                    <td>Message</td>
-                    <td>Action</td>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach ($lifeLogs as $lifeLog)
-                    <tr>
-                        <td>{{ $lifeLog->id }}</td>
-                        <td>{{ date('m/d/Y', strtotime($lifeLog->date)) }}</td>
-                        <td>{{ $lifeLog->message }}</td>
-                        <td><a href="{{ route('lifelog.edit', $lifeLog->id) }}" class="link link-accent">Edit</a></td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @foreach ($lifeLogs as $lifeLog)
+            <div class="shadow-lg my-4 alert alert-{{ $lifeLog->category->color }} bg-{{ $lifeLog->category->color }} text-{{ $lifeLog->category->color }}-content my-4">
+                <div>
+                    <i class="{{ $lifeLog->category->icon }} text-xl"></i>
+                    <div>
+                        <span>{{ $lifeLog->message }}</span>
+                        <div class="text-xs">Date: {{ date('m/d/Y', strtotime($lifeLog->date)) }}</div>
+                    </div>
+                </div>
+                <div class="flex-none">
+                    <a href="{{ route('lifelog.edit', $lifeLog->id) }}" class="btn btn-sm">{{ __('Edit Life Log') }}</a>
+                </div>
+            </div>
+        @endforeach
 
         @php
             $options = array();

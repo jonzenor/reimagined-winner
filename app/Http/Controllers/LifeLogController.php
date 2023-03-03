@@ -14,7 +14,7 @@ class LifeLogController extends Controller
      */
     public function index()
     {
-        $lifeLogs = LifeLog::all();
+        $lifeLogs = LifeLog::orderBy('date')->get();
         $categories = LifeLogCategory::all();
 
         return view('lifelog.index', [
@@ -61,7 +61,7 @@ class LifeLogController extends Controller
     public function edit(string $id)
     {
         $editLog = LifeLog::find($id);
-        $lifeLogs = LifeLog::all();
+        $lifeLogs = LifeLog::orderBy('date')->get();
         $categories = LifeLogCategory::all();
 
         return view('lifelog.index', [
@@ -79,6 +79,7 @@ class LifeLogController extends Controller
         $lifeLog = LifeLog::find($id);
         $lifeLog->date = Carbon::createFromFormat('n/j/Y', $request->date)->format('Y-m-d');
         $lifeLog->message = $request->message;
+        $lifeLog->category_id = $request->category;
         $lifeLog->save();
 
         return redirect()->route('lifelog.index');

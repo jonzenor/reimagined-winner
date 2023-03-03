@@ -152,6 +152,19 @@ class LifeLogControllerTest extends TestCase
         $result->assertSee($data['message']);
     }
 
+    public function test_life_log_management_page_orders_entries_by_date()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+        $lifeLog2 = LifeLog::factory()->category($category)->date('2023-01-01')->create();
+        $lifeLog1 = LifeLog::factory()->category($category)->date('2022-01-01')->create();
+        $lifeLog3 = LifeLog::factory()->category($category)->date('2023-03-04')->create();
+
+        $result = $this->actingAs($user)->get(route('lifelog.index'));
+
+        $result->assertSeeInOrder([$lifeLog1->message, $lifeLog2->message, $lifeLog3->message]);
+    }
+
     // Life Log Edit Page
     public function test_life_log_manage_page_has_link_to_edit_message()
     {
@@ -177,20 +190,38 @@ class LifeLogControllerTest extends TestCase
         $result->assertSeeInOrder(["form", 'name="date"', "value=", date('m/d/Y', strtotime($lifeLog->date)), "/form"], false);
     }
 
+    public function test_life_log_edit_page_orders_entries_by_date()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+        $lifeLog2 = LifeLog::factory()->category($category)->date('2023-01-01')->create();
+        $lifeLog1 = LifeLog::factory()->category($category)->date('2022-01-01')->create();
+        $lifeLog3 = LifeLog::factory()->category($category)->date('2023-03-04')->create();
+
+        $result = $this->actingAs($user)->get(route('lifelog.edit', $lifeLog1->id));
+
+        $result->assertSeeInOrder([$lifeLog1->message, $lifeLog2->message, $lifeLog3->message]);
+    }
+
     // Life Log Update Record
     public function test_life_log_update_page_updates_record()
     {
         $user = $this->createUser();
-        $lifeLog = $this->createLifeLog();
+        $lifeLogCategory1 = $this->createLifeLogCategory();
+        $lifeLogCategory2 = $this->createLifeLogCategory();
+        $lifeLog = LifeLog::factory()->category($lifeLogCategory1)->create();
 
         $data = [
             'date' => '3/1/2023',
             'message' => 'This is an updated test',
+            'category' => $lifeLogCategory2->id,
         ];
 
         $result = $this->actingAs($user)->post(route('lifelog.update', $lifeLog->id), $data);
 
         $data['date'] = '2023-03-01';
+        $data['category_id'] = $data['category'];
+        unset($data['category']);
 
         $this->assertDatabaseHas('life_logs', $data);
     }
@@ -205,6 +236,20 @@ class LifeLogControllerTest extends TestCase
         $result->assertSee($lifeLog->message);
         $result->assertSee(date('m/d/Y', strtotime($lifeLog->date)));
     }
+
+    public function test_home_page_orders_life_log_entries_by_date()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+        $lifeLog2 = LifeLog::factory()->category($category)->date('2023-01-01')->create();
+        $lifeLog1 = LifeLog::factory()->category($category)->date('2022-01-01')->create();
+        $lifeLog3 = LifeLog::factory()->category($category)->date('2023-03-04')->create();
+
+        $result = $this->actingAs($user)->get(route('home'));
+
+        $result->assertSeeInOrder([$lifeLog1->message, $lifeLog2->message, $lifeLog3->message]);
+    }
+
 
     // *******************
     // Life Log Categories
@@ -374,7 +419,7 @@ class LifeLogControllerTest extends TestCase
         $data['date'] = '2023-03-03';
         $data['category_id'] = $data['category'];
         unset($data['category']);
-        
+
         $this->assertDatabaseHas('life_logs', $data);
     }
 

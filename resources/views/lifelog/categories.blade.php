@@ -10,7 +10,7 @@
         @foreach ($categories as $category)
             <div class="shadow-lg alert alert-{{ $category->color }} bg-{{ $category->color }} text-{{ $category->color }}-content my-4">
                 <div>
-                    <i class="{{ $category->icon }}"></i>
+                    <i class="{{ $category->icon }} text-xl"></i>
                     <div>
                         <span>{{ $category->name }}</span>
                         <div class="text-xs">ID: {{ $category->id }}</div>
@@ -51,7 +51,7 @@
                 <table class="table w-full">
                     <thead>
                         <tr class="bg-accent text-accent-content">
-                            <td colspan="3" class="bg-accent">{{ __('Create Life Log Entry') }}</td>
+                            <td colspan="3" class="bg-accent">{{ __('Create Life Log Category') }}</td>
                         </tr>
                     </thead>
                     <tbody>
