@@ -1,4 +1,4 @@
-<div class="my-4 form-control">
+<div class="form-control">
     <label for="select-{{ $name }}" class="label">
         <span class="label-text">{{ $label }}</span>
     </label>

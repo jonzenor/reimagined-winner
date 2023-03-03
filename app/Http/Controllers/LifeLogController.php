@@ -36,9 +36,12 @@ class LifeLogController extends Controller
      */
     public function store(Request $request)
     {
+        $category = LifeLogCategory::find($request->category);
+
         $lifeLog = new LifeLog();
         $lifeLog->date = Carbon::createFromFormat('n/j/Y', $request->date)->format('Y-m-d');
         $lifeLog->message = $request->message;
+        $lifeLog->category_id = $category->id;
         $lifeLog->save();
 
         return redirect()->route('lifelog.index');
@@ -59,10 +62,12 @@ class LifeLogController extends Controller
     {
         $editLog = LifeLog::find($id);
         $lifeLogs = LifeLog::all();
+        $categories = LifeLogCategory::all();
 
         return view('lifelog.index', [
             'lifeLogs' => $lifeLogs,
             'editLifeLog' => $editLog,
+            'categories' => $categories,
         ]);
     }
 

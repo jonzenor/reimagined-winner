@@ -30,6 +30,17 @@
             </tbody>
         </table>
 
+        @php
+            $options = array();
+            foreach($categories as $category)
+            {
+                $options[] = [
+                    'value' => $category->id,
+                    'text' => $category->name
+                ];
+            }
+        @endphp
+
         @isset($editLifeLog)
             <form action="{{ route('lifelog.update', $editLifeLog->id) }}" method="post">
                 @csrf
@@ -42,9 +53,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><x-forms.labeled-input name="date" label="Date" :value="date('m/d/Y', strtotime($editLifeLog->date))" /></td>
-                            <td><x-forms.labeled-input name="message" label="Message" :value="$editLifeLog->message" /></td>
-                            <td><x-forms.submit-button text="Update" /></td>
+                            <td class="align-bottom" colspan="3"><x-forms.labeled-input name="message" label="Message" :value="$editLifeLog->message" /></td>
+                        </tr>
+                        <tr>
+                            <td class="align-bottom"><x-forms.select-dropdown name="category" :options="$options" firstOption="Select a Category" label="Category" :selected="$editLifeLog->category->id" /></td>
+                            <td class="align-bottom"><x-forms.input-text name="date" label="Date" :value="date('m/d/Y', strtotime($editLifeLog->date))" /></td>
+                            <td class="align-bottom" colspan="3"><x-forms.submit-button text="Update" /></td>
                         </tr>
                     </tbody>    
                 </table>
@@ -62,16 +76,6 @@
                     <tbody class="align-bottom">
                         <tr>
                             <td class="align-bottom">
-                                @php
-                                    $options = array();
-                                    foreach($categories as $category)
-                                    {
-                                        $options[] = [
-                                            'value' => $category->id,
-                                            'text' => $category->name
-                                        ];
-                                    }
-                                @endphp
                                 <x-forms.select-dropdown name="category" :options="$options" firstOption="Select a Category" label="Category" />
                             </td>
                             <td class="align-bottom"><x-forms.input-text name="date" label="Date" :value="date('m/d/Y')" /></td>

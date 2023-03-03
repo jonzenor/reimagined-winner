@@ -1,4 +1,4 @@
-<div class="w-full my-4 form-control">
+<div class="w-full form-control">
     <label class="label" for="input-{{ $name }}">
         <span class="label-text">{{ $label }}</span>
     </label>

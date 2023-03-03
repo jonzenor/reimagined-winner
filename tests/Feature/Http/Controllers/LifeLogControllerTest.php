@@ -87,13 +87,17 @@ class LifeLogControllerTest extends TestCase
     public function test_life_log_save_form_saves_data()
     {
         $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
 
         $data['date'] = '2/28/2023';
         $data['message'] = 'This is a test';
+        $data['category'] = $category->id;
 
         $result = $this->actingAS($user)->post(route('lifelog.save'), $data);
 
         $data['date'] = '2023-02-28';
+        $data['category_id'] = $data['category'];
+        unset($data['category']);
 
         $this->assertDatabaseHas('life_logs', $data);
     }
@@ -101,9 +105,11 @@ class LifeLogControllerTest extends TestCase
     public function test_life_log_save_redirects_to_life_log_management_page()
     {
         $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
 
         $data['date'] = '2/28/2023';
         $data['message'] = 'This is a test';
+        $data['category'] = $category->id;
 
         $result = $this->actingAS($user)->post(route('lifelog.save'), $data);
 
@@ -134,9 +140,11 @@ class LifeLogControllerTest extends TestCase
     public function test_life_log_management_page_shows_entries()
     {
         $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
 
         $data['date'] = '02/28/2023';
         $data['message'] = 'This is a test';
+        $data['category'] = $category->id;
 
         $result = $this->actingAs($user)->followingRedirects()->post(route('lifelog.save'), $data);
 
@@ -158,11 +166,13 @@ class LifeLogControllerTest extends TestCase
     public function test_life_log_edit_page_loads_log_entry()
     {
         $user = $this->createUser();
-        $lifeLog = $this->createLifeLog();
+        $category = $this->createLifeLogCategory();
+        $lifeLog = LifeLog::factory()->category($category)->create();
 
         $result = $this->actingAs($user)->get(route('lifelog.edit', $lifeLog->id));
 
         $result->assertViewIs('lifelog.index');
+        $result->assertSeeInOrder(["form", 'name="category"', "SELECTED", $lifeLog->category->name, "/form"], false);
         $result->assertSeeInOrder(["form", 'name="message"', "value=", $lifeLog->message, "/form"], false);
         $result->assertSeeInOrder(["form", 'name="date"', "value=", date('m/d/Y', strtotime($lifeLog->date)), "/form"], false);
     }
@@ -348,9 +358,24 @@ class LifeLogControllerTest extends TestCase
         $result->assertSeeInOrder(['Create Life Log Entry', $category->name, 'Add Life Log']);
     }
 
-    public function life_log_entry_page_adds_category()
+    public function test_life_log_entry_page_adds_category()
     {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
 
+        $data = [
+            'date' => '3/3/2023',
+            'message' => 'Testing',
+            'category' => $category->id,
+        ];
+
+        $result = $this->actingAs($user)->post(route('lifelog.save'), $data);
+
+        $data['date'] = '2023-03-03';
+        $data['category_id'] = $data['category'];
+        unset($data['category']);
+        
+        $this->assertDatabaseHas('life_logs', $data);
     }
 
     // Helper Functions
