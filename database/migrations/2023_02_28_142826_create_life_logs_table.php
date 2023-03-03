@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->text('message');
+            // $table->bigInteger('category');
             $table->timestamps();
         });
     }

@@ -53,17 +53,30 @@
             <form action="{{ route('lifelog.save') }}" method="post">
                 @csrf
 
-                <table class="table w-full">
+                <table class="table w-full my-5 table-compact">
                     <thead>
                         <tr>
                             <td colspan="2">{{ __('Create Life Log Entry') }}</td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="align-bottom">
                         <tr>
-                            <td><x-forms.labeled-input name="date" label="Date" :value="date('m/d/Y')" /></td>
-                            <td><x-forms.labeled-input name="message" label="Message" /></td>
-                            <td><x-forms.submit-button text="Add Life Log" /></td>
+                            <td class="align-bottom">
+                                @php
+                                    $options = array();
+                                    foreach($categories as $category)
+                                    {
+                                        $options[] = [
+                                            'value' => $category->id,
+                                            'text' => $category->name
+                                        ];
+                                    }
+                                @endphp
+                                <x-forms.select-dropdown name="category" :options="$options" firstOption="Select a Category" label="Category" />
+                            </td>
+                            <td class="align-bottom"><x-forms.input-text name="date" label="Date" :value="date('m/d/Y')" /></td>
+                            <td class="align-bottom"><x-forms.input-text name="message" label="Message" /></td>
+                            <td class="align-bottom"><x-forms.submit-button text="Add Life Log" /></td>
                         </tr>
                     </tbody>    
                 </table>

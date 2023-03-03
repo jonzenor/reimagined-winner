@@ -337,6 +337,22 @@ class LifeLogControllerTest extends TestCase
         $result->assertRedirect(route('lifelogcategory.index'));
     }
 
+    // Life Log Category Usage
+    public function test_category_can_be_selected_on_life_log_new_form()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+
+        $result = $this->actingAs($user)->get(route('lifelog.index'));
+
+        $result->assertSeeInOrder(['Create Life Log Entry', $category->name, 'Add Life Log']);
+    }
+
+    public function life_log_entry_page_adds_category()
+    {
+
+    }
+
     // Helper Functions
     private function createLifeLog()
     {

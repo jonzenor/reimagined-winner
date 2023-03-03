@@ -15,9 +15,11 @@ class LifeLogController extends Controller
     public function index()
     {
         $lifeLogs = LifeLog::all();
+        $categories = LifeLogCategory::all();
 
         return view('lifelog.index', [
             'lifeLogs' => $lifeLogs,
+            'categories' => $categories,
         ]);
     }
 
