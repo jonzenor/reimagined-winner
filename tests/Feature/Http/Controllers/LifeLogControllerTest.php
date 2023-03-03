@@ -210,6 +210,18 @@ class LifeLogControllerTest extends TestCase
         $result->assertSee(route('lifelogcategory.index'));
     }
 
+    public function test_life_log_category_count_shows_on_dashboard()
+    {
+        $user = $this->createUser();
+        $this->createLifeLogCategory();
+        $this->createLifeLogCategory();
+        $this->createLifeLogCategory();
+
+        $result = $this->actingAs($user)->get(route('dashboard'));
+
+        $result->assertSeeInOrder([__('Categories'), "3", __('Manage')], false);
+    }
+
     // Management Page
     public function test_life_log_categories_management_page_loads()
     {
@@ -278,14 +290,51 @@ class LifeLogControllerTest extends TestCase
     }
 
     // Category Edit Page
-    public function life_log_category_test_page_loads()
+    public function test_life_log_category_test_page_loads()
     {
         $user = $this->createUser();
         $category = $this->createLifeLogCategory();
 
         $result = $this->actingAs($user)->get(route('lifelogcategory.edit', $category->id));
 
-        $result->see();
+        $result->assertSee(route('lifelogcategory.update', $category->id));
+        $result->assertSeeInOrder(["form", 'name="name"', "value=", $category->name, "/form"], false);
+        $result->assertSeeInOrder(["form", 'name="icon"', "value=", $category->icon, "/form"], false);
+        $result->assertSeeInOrder(["form", 'name="color"', "value=", $category->color, "/form"], false);
+        $result->assertSee('input type="submit"', false);
+    }
+
+    // Category Update
+    public function test_life_log_category_update_saves_record()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+
+        $data = [
+            'icon' => 'fa-solid fa-image',
+            'color' => 'accent',
+            'name' => 'Updated Category',
+        ];
+
+        $result = $this->actingAs($user)->post(route('lifelogcategory.update', $category->id), $data);
+
+        $this->assertDatabaseHas('life_log_categories', $data);
+    }
+
+    public function test_life_log_category_update_redirects_to_manage_page()
+    {
+        $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
+
+        $data = [
+            'icon' => 'fa-solid fa-image',
+            'color' => 'accent',
+            'name' => 'Updated Category',
+        ];
+
+        $result = $this->actingAs($user)->post(route('lifelogcategory.update', $category->id), $data);
+
+        $result->assertRedirect(route('lifelogcategory.index'));
     }
 
     // Helper Functions

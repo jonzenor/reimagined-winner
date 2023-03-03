@@ -105,4 +105,27 @@ class LifeLogController extends Controller
 
         return redirect()->route('lifelogcategory.index');
     }
+
+    public function categoryEdit($id)
+    {
+        $category = LifeLogCategory::find($id);
+        $categories = LifeLogCategory::all();
+
+        return view('lifelog.categories', [
+            'editCategory' => $category,
+            'categories' => $categories,
+        ]);
+    }
+
+    public function categoryUpdate(Request $request, $id)
+    {
+        $category = LifeLogCategory::find($id);
+
+        $category->icon = $request->icon;
+        $category->color = $request->color;
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect()->route('lifelogcategory.index');
+    }
 }

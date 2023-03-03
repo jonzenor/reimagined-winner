@@ -22,26 +22,29 @@
             </div>
         @endforeach
 
-        {{-- @isset($editLifeLog)
-            <form action="{{ route('lifelog.update', $editLifeLog->id) }}" method="post">
+        @isset($editCategory)
+            <form action="{{ route('lifelogcategory.update', $editCategory->id) }}" method="post">
                 @csrf
 
                 <table class="table w-full">
                     <thead>
-                        <tr>
-                            <td colspan="2">{{ __('Edit Life Log Entry') }}</td>
+                        <tr class="bg-accent text-accent-content">
+                            <td colspan="3" class="bg-accent">{{ __('Create Life Log Entry') }}</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><x-forms.labeled-input name="date" label="Date" :value="date('m/d/Y', strtotime($editLifeLog->date))" /></td>
-                            <td><x-forms.labeled-input name="message" label="Message" :value="$editLifeLog->message" /></td>
-                            <td><x-forms.submit-button text="Update" /></td>
+                            <td><x-forms.input-text name="icon" label="Icon Class" :value="$editCategory->icon" /></td>
+                            <td><x-forms.input-text name="color" label="Color Class" :value="$editCategory->color" /></td>
+                            <td><x-forms.input-text name="name" label="Category Name" :value="$editCategory->name" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><x-forms.submit-button text="Update Category" /></td>
                         </tr>
                     </tbody>    
                 </table>
             </form>
-        @else --}}
+        @else
             <form action="{{ route('lifelogcategory.save') }}" method="post">
                 @csrf
 
@@ -64,7 +67,7 @@
                 </table>
             </form>
 
-        {{-- @endisset --}}
+        @endisset
 
         <x-page-buttons :secondaryLink="route('dashboard')" :secondaryText="__('Back to Dashboard')" />
     </div>

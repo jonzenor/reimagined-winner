@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\LifeLog;
+use App\Models\LifeLogCategory;
 
 class ProfileController extends Controller
 {
@@ -62,6 +63,7 @@ class ProfileController extends Controller
     public function dashboard()
     {
         $lifeLog['messageCount'] = LifeLog::count();
+        $lifeLog['categoryCount'] = LifeLogCategory::count();
 
         return view('dashboard', [
             'lifeLog' => $lifeLog,

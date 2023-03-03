@@ -18,7 +18,7 @@
                     </tr>
                     <tr>
                         <td>Categories</td>
-                        <td>###</td>
+                        <td>{{ $lifeLog['categoryCount'] }}</td>
                         <td><a href="{{ route('lifelogcategory.index') }}" class="link link-accent">Manage</a></td>
                     </tr>
                 </tbody>
