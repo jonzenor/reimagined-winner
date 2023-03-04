@@ -69,7 +69,7 @@
               @endguest
 
               @auth
-                
+                <a href="{{ route('dashboard') }}" class="mx-4 link link-primary"><i class="fa-regular fa-gauge"></i></a>
               @endauth
              
             </div>
