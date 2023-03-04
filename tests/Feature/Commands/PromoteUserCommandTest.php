@@ -21,11 +21,11 @@ class PromoteUserCommandTest extends TestCase
         $response->assertExitCode(0);
     }
 
-    public function promote_user_command_sets_user_as_super_admin()
+    public function test_promote_user_command_sets_user_as_super_admin()
     {
         $user = $this->createUser('guest');
 
-        $response = $this->artisan("user:promote {$user->email}")->assertSuccessful();
+        $this->artisan("user:promote {$user->email}")->assertSuccessful();
 
         $role = Role::where('name', '=', 'Super Admin')->first();
         $this->assertDatabaseHas('users', [
