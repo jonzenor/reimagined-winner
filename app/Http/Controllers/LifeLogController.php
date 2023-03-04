@@ -112,7 +112,7 @@ class LifeLogController extends Controller
 
     public function categoryIndex()
     {
-        $categories = LifeLogCategory::all();
+        $categories = LifeLogCategory::orderBy('name')->get();
 
         return view('lifelog.categories', [
             'categories' => $categories,
@@ -134,7 +134,7 @@ class LifeLogController extends Controller
     public function categoryEdit($id)
     {
         $category = LifeLogCategory::find($id);
-        $categories = LifeLogCategory::all();
+        $categories = LifeLogCategory::orderBy('name')->get();
 
         return view('lifelog.categories', [
             'editCategory' => $category,

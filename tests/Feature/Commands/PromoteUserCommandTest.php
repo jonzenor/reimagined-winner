@@ -25,7 +25,7 @@ class PromoteUserCommandTest extends TestCase
     {
         $user = $this->createUser('guest');
 
-        $response = $this->artisan("user:promote {$user->email}")->assertExitCode(0);
+        $response = $this->artisan("user:promote {$user->email}")->assertSuccessful();
 
         $role = Role::where('name', '=', 'Super Admin')->first();
         $this->assertDatabaseHas('users', [
