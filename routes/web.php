@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LifeLogController;
 use Illuminate\Support\Facades\Route;
@@ -41,5 +43,18 @@ Route::name('lifelogcategory.')->middleware('auth')->prefix('lifelogcategory')->
     Route::get('edit/{id}', [LifeLogController::class, 'categoryEdit'])->name('edit');
     Route::post('update/{id}', [LifeLogController::class, 'categoryUpdate'])->name('update');
 });
+
+Route::name('role.')->middleware('auth')->prefix('role')->group(function () {
+    Route::get('index', [RoleController::class, 'index'])->name('index');
+    Route::get('edit/{id}', [RoleController::class, 'edit'])->name('edit');
+    Route::post('edit/{id}/update', [RoleController::class, 'update'])->name('update');
+});
+
+Route::name('user.')->middleware('auth')->prefix('user')->group(function () {
+    Route::get('index', [UserController::class, 'index'])->name('index');
+    Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit');
+    Route::post('edit/{id}/update', [UserController::class, 'update'])->name('update');
+});
+
 
 require __DIR__.'/auth.php';

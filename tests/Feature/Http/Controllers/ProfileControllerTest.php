@@ -19,4 +19,13 @@ class ProfileControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_dashboard_link_shows_on_home_page()
+    {
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertSee(route('dashboard'));
+    }
 }

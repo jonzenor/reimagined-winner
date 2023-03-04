@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\LifeLog;
 use App\Models\LifeLogCategory;
+use App\Models\Role;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -64,9 +66,12 @@ class ProfileController extends Controller
     {
         $lifeLog['messageCount'] = LifeLog::count();
         $lifeLog['categoryCount'] = LifeLogCategory::count();
+        $users['userCount'] = User::count();
+        $users['roleCount'] = Role::count();
 
         return view('dashboard', [
             'lifeLog' => $lifeLog,
+            'users' => $users,
         ]);
     }
 }
