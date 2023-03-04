@@ -19,7 +19,7 @@ module.exports = {
     plugins: [require('@tailwindcss/forms'), require("daisyui")],
 
     daisyui:{
-        themes: ['cmyk', 'night'],
+        themes: ['emerald', 'night'],
         darkTheme: "night",
     }
     
