@@ -162,13 +162,14 @@ class LifeLogControllerTest extends TestCase
 
         $result = $this->actingAs($user)->get(route('lifelog.index'));
 
-        $result->assertSeeInOrder([$lifeLog1->message, $lifeLog2->message, $lifeLog3->message]);
+        $result->assertSeeInOrder([$lifeLog3->message, $lifeLog2->message, $lifeLog1->message]);
     }
 
     // Life Log Edit Page
     public function test_life_log_manage_page_has_link_to_edit_message()
     {
         $user = $this->createUser();
+        $category = $this->createLifeLogCategory();
         $lifeLog = $this->createLifeLog();
 
         $result = $this->actingAs($user)->get(route('lifelog.index'));
@@ -200,7 +201,7 @@ class LifeLogControllerTest extends TestCase
 
         $result = $this->actingAs($user)->get(route('lifelog.edit', $lifeLog1->id));
 
-        $result->assertSeeInOrder([$lifeLog1->message, $lifeLog2->message, $lifeLog3->message]);
+        $result->assertSeeInOrder([$lifeLog3->message, $lifeLog2->message, $lifeLog1->message]);
     }
 
     // Life Log Update Record
@@ -247,7 +248,7 @@ class LifeLogControllerTest extends TestCase
 
         $result = $this->actingAs($user)->get(route('home'));
 
-        $result->assertSeeInOrder([$lifeLog1->message, $lifeLog2->message, $lifeLog3->message]);
+        $result->assertSeeInOrder([$lifeLog3->message, $lifeLog2->message, $lifeLog1->message]);
     }
 
 
@@ -426,6 +427,7 @@ class LifeLogControllerTest extends TestCase
     // Helper Functions
     private function createLifeLog()
     {
+        $this->createLifeLogCategory();
         return LifeLog::factory()->create();
     }
 

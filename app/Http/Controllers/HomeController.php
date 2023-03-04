@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function home()
     {
-        $lifeLogs = LifeLog::orderBy('date')->get();
+        $lifeLogs = LifeLog::orderByDesc('date')->get();
 
         return view('home', [
             'lifeLogs' => $lifeLogs,

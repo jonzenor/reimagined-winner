@@ -14,7 +14,7 @@ class LifeLogController extends Controller
      */
     public function index()
     {
-        $lifeLogs = LifeLog::orderBy('date')->get();
+        $lifeLogs = LifeLog::orderByDesc('date')->get();
         $categories = LifeLogCategory::all();
 
         return view('lifelog.index', [
@@ -61,7 +61,7 @@ class LifeLogController extends Controller
     public function edit(string $id)
     {
         $editLog = LifeLog::find($id);
-        $lifeLogs = LifeLog::orderBy('date')->get();
+        $lifeLogs = LifeLog::orderByDesc('date')->get();
         $categories = LifeLogCategory::all();
 
         return view('lifelog.index', [
