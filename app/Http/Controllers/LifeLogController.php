@@ -14,6 +14,8 @@ class LifeLogController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', LifeLog::class);
+
         $lifeLogs = LifeLog::orderByDesc('date')->get();
         $categories = LifeLogCategory::all();
 
@@ -28,7 +30,15 @@ class LifeLogController extends Controller
      */
     public function create()
     {
-        return view('lifelog.index');
+        $this->authorize('create', LifeLog::class);
+
+        $lifeLogs = LifeLog::orderByDesc('date')->get();
+        $categories = LifeLogCategory::all();
+
+        return view('lifelog.index', [
+            'lifeLogs' => $lifeLogs,
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -36,6 +46,8 @@ class LifeLogController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', LifeLog::class);
+        
         $category = LifeLogCategory::find($request->category);
 
         $lifeLog = new LifeLog();
@@ -58,15 +70,17 @@ class LifeLogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(String $id)
     {
-        $editLog = LifeLog::find($id);
+        $lifeLog = LifeLog::find($id);
+        $this->authorize('update', $lifeLog);
+
         $lifeLogs = LifeLog::orderByDesc('date')->get();
         $categories = LifeLogCategory::all();
 
         return view('lifelog.index', [
             'lifeLogs' => $lifeLogs,
-            'editLifeLog' => $editLog,
+            'editLifeLog' => $lifeLog,
             'categories' => $categories,
         ]);
     }
@@ -77,6 +91,9 @@ class LifeLogController extends Controller
     public function update(Request $request, string $id)
     {
         $lifeLog = LifeLog::find($id);
+
+        $this->authorize('update', $lifeLog);
+
         $lifeLog->date = Carbon::createFromFormat('n/j/Y', $request->date)->format('Y-m-d');
         $lifeLog->message = $request->message;
         $lifeLog->category_id = $request->category;

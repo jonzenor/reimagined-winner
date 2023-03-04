@@ -2,7 +2,7 @@
 
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            {{ __('Life Log') }}
+            {{ __('Life Log Categories') }}
         </h2>
     </x-slot>
     
@@ -28,8 +28,8 @@
 
                 <table class="table w-full">
                     <thead>
-                        <tr class="bg-accent text-accent-content">
-                            <td colspan="3" class="bg-accent">{{ __('Create Life Log Entry') }}</td>
+                        <tr class="">
+                            <td colspan="3" class="">{{ __('Create Life Log Entry') }}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,8 +50,8 @@
 
                 <table class="table w-full">
                     <thead>
-                        <tr class="bg-accent text-accent-content">
-                            <td colspan="3" class="bg-accent">{{ __('Create Life Log Category') }}</td>
+                        <tr class="">
+                            <td colspan="3" class="">{{ __('Create Life Log Category') }}</td>
                         </tr>
                     </thead>
                     <tbody>

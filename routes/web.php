@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
 
 Route::name('lifelog.')->middleware('auth')->prefix('lifelog')->group(function () {
     Route::get('manage', [LifeLogController::class, 'index'])->name('index');
-    Route::get('create', [LifeLogController::class, 'index'])->name('create');
+    Route::get('create', [LifeLogController::class, 'create'])->name('create');
     Route::post('save', [LifeLogController::class, 'store'])->name('save');
     Route::get('edit/{id}', [LifeLogController::class, 'edit'])->name('edit');
     Route::post('update/{id}', [LifeLogController::class, 'update'])->name('update');

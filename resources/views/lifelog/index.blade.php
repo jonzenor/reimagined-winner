@@ -62,7 +62,7 @@
                 <table class="table w-full my-5 table-compact">
                     <thead>
                         <tr>
-                            <td colspan="2">{{ __('Create Life Log Entry') }}</td>
+                            <td colspan="4">{{ __('Create Life Log Entry') }}</td>
                         </tr>
                     </thead>
                     <tbody class="align-bottom">

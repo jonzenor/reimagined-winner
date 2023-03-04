@@ -424,6 +424,111 @@ class LifeLogControllerTest extends TestCase
         $this->assertDatabaseHas('life_logs', $data);
     }
 
+    public function test_life_log_does_not_show_on_dashboard_for_regular_users()
+    {
+        $user = $this->createUser('guest');
+
+        $response = $this->actingAs($user)->get(route('dashboard'));
+
+        $response->assertDontSee(__('Life Log Stats'));
+        $response->assertDontSee(route('lifelog.index'));
+    }
+
+    public function test_life_log_management_page_not_usable_by_guests()
+    {
+        $response = $this->get(route('lifelog.index'));
+
+        $response->assertRedirect(route('login'));
+    }
+
+    public function test_life_log_management_page_not_usable_by_reg_users()
+    {
+        $user = $this->createUser('guest');
+
+        $response = $this->actingAs($user)->get(route('lifelog.index'));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reg_user_cannot_edit_life_log()
+    {
+        $user = $this->createUser('guest');
+        $lifeLog = $this->createLifeLog();
+
+        $response = $this->actingAs($user)->get(route('lifelog.edit', $lifeLog->id));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reg_user_cannot_update_life_log()
+    {
+        $user = $this->createUser('guest');
+        $lifeLog = $this->createLifeLog();
+        $data = $this->getLifeLogData('update');
+
+        $response = $this->actingAs($user)->post(route('lifelog.update', $lifeLog->id), $data);
+
+        $data = $this->translateDataToDatabse($data, 'update');
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('life_logs', $data);
+    }
+
+    public function test_reg_user_cannot_create_life_log()
+    {
+        $user = $this->createUser('guest');
+
+        $response = $this->actingAs($user)->get(route('lifelog.create'));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reg_user_cannot_save_a_new_life_log()
+    {
+        $user = $this->createUser('guest');
+        $data = $this->getLifeLogData('new');
+        $category = $this->createLifeLogCategory();
+
+        $response = $this->actingAs($user)->post(route('lifelog.save'), $data);
+
+        $data = $this->translateDataToDatabse($data, 'new');
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('life_logs', $data);
+    }
+
+    public function test_admins_can_create_life_log()
+    {
+        $user = $this->createUser('Admin');
+        $data = $this->getLifeLogData('new');
+        $category = $this->createLifeLogCategory();
+        $data['category'] = $category->id;
+
+        $response = $this->actingAs($user)->post(route('lifelog.save'), $data);
+
+        $data = $this->translateDataToDatabse($data, 'new');
+        $this->assertDatabaseHas('life_logs', $data);
+    }
+
+    public function test_admins_can_edit_life_log_entries()
+    {
+        $user = $this->createUser('Admin');
+        $lifeLog = $this->createLifeLog();
+        $data = $this->getLifeLogData('update');
+
+        $response = $this->actingAs($user)->post(route('lifelog.update', $lifeLog->id), $data);
+
+        $data = $this->translateDataToDatabse($data, 'update');
+        $this->assertDatabaseHas('life_logs', $data);
+    }
+
+    public function test_admins_can_see_life_log_management_links_on_dashboard()
+    {
+        $user = $this->createUser('Admin');
+
+        $response = $this->actingAs($user)->get(route('dashboard'));
+
+        $response->assertSee(route('lifelog.index'));
+    }
+
     // Helper Functions
     private function createLifeLog()
     {
@@ -434,5 +539,31 @@ class LifeLogControllerTest extends TestCase
     private function createLifeLogCategory()
     {
         return LifeLogCategory::factory()->create();
+    }
+
+    private function getLifeLogData($type)
+    {
+        $data = array();
+
+        if ($type == 'update' || $type == 'new') {
+            $data = [
+                'date' => '3/6/2023',
+                'message' => 'This is a test message',
+                'category' => 1,
+            ];
+        }
+
+        return $data;
+    }
+
+    private function translateDataToDatabse(array $data, String $type)
+    {
+        if ($type == 'update' || $type == 'new') {
+            $data['date'] = date('Y-m-d', strtotime($data['date']));
+            $data['category_id'] = $data['category'];
+            unset($data['category']);
+        }
+
+        return $data;
     }
 }
