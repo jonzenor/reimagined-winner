@@ -529,6 +529,15 @@ class LifeLogControllerTest extends TestCase
         $response->assertSee(route('lifelog.index'));
     }
 
+    public function test_guests_cannot_see_life_log_edit_button_on_homepage()
+    {
+        $lifeLog = $this->createLifeLog();
+        
+        $response = $this->get(route('home'));
+
+        $response->assertDontSee('Edit Life Log');
+    }
+
     // Helper Functions
     private function createLifeLog()
     {

@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="flex-none">
-            <a href="{{ route('lifelog.edit', $lifeLog->id) }}" class="btn btn-sm">{{ __('Edit Life Log') }}</a>
+            @can('update', $lifeLog)<a href="{{ route('lifelog.edit', $lifeLog->id) }}" class="btn btn-sm">{{ __('Edit Life Log') }}</a>@endcan
         </div>
       </div>
     @endforeach
