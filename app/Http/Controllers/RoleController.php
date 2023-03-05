@@ -9,6 +9,8 @@ class RoleController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Role::class);
+
         $roles = Role::all();
 
         return view('role.index', [
@@ -19,6 +21,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
+        $this->authorize('update', $role);
 
         return view('role.edit', [
             'role' => $role,
@@ -28,6 +31,7 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::find($id);
+        $this->authorize('update', $role);
 
         $role->name = $request->name;
         $role->color = $request->color;

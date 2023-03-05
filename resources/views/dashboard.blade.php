@@ -7,30 +7,31 @@
 
     <div class="grid w-11/12 grid-cols-1 gap-4 mx-auto my-4 md:grid-cols-2 xl:grid-cols-3">
     
-            @can('viewAny', App\Models\LifeLog::class)
-                <x-info-card :title="__('Life Log Stats')">
-                    
-                    <table class="table w-full">
-                        <tbody>
-                            <tr>
-                                <td>Log Entries</td>
-                                <td>{{ $lifeLog['messageCount'] }}</td>
-                                <td><a href="{{ route('lifelog.index') }}" class="link link-accent">Manage</a></td>
-                            </tr>
-                            <tr>
-                                <td>Categories</td>
-                                <td>{{ $lifeLog['categoryCount'] }}</td>
-                                <td><a href="{{ route('lifelogcategory.index') }}" class="link link-accent">Manage</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+        @can('viewAny', App\Models\LifeLog::class)
+            <x-info-card :title="__('Life Log Stats')">
+                
+                <table class="table w-full">
+                    <tbody>
+                        <tr>
+                            <td>Log Entries</td>
+                            <td>{{ $lifeLog['messageCount'] }}</td>
+                            <td><a href="{{ route('lifelog.index') }}" class="link link-accent">Manage</a></td>
+                        </tr>
+                        <tr>
+                            <td>Categories</td>
+                            <td>{{ $lifeLog['categoryCount'] }}</td>
+                            <td><a href="{{ route('lifelogcategory.index') }}" class="link link-accent">Manage</a></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                    <div class="justify-end my-4 card-actions">
-                        <a href="{{ route('lifelog.create') }}" class="btn btn-primary">Add Log Entry</a>
-                    </div>
-                </x-info-card>
-            @endcan
+                <div class="justify-end my-4 card-actions">
+                    <a href="{{ route('lifelog.create') }}" class="btn btn-primary">Add Log Entry</a>
+                </div>
+            </x-info-card>
+        @endcan
 
+        @can('viewAny', App\Models\User::class)
             <x-info-card :title="__('User Stats')">
                 <table class="table w-full">
                     <tbody>
@@ -47,6 +48,7 @@
                     </tbody>
                 </table>
             </x-info-card>
+        @endcan
     </div>
     
 </x-app-layout>

@@ -10,6 +10,8 @@ class UserController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+
         $users = User::all();
 
         return view('user.index', [
@@ -20,6 +22,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+        $this->authorize('update', $user);
+
         $roles = Role::all();
 
         return view('user.edit', [
@@ -32,6 +36,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $role = Role::find($request->role);
+
+        $this->authorize('update', $user);
 
         $user->name = $request->name;
         $user->email = $request->email;

@@ -108,4 +108,80 @@ class UserControllerTest extends TestCase
 
         $response->assertRedirect(route('user.index'));
     }
+
+    public function test_reg_users_do_not_see_user_stats_on_dashboard()
+    {
+        $user = $this->createUser('guest');
+
+        $response = $this->actingAs($user)->get(route('dashboard'));
+
+        $response->assertDontSee('User Stats');
+        $response->assertDontSee(route('user.index'));
+    }
+
+    public function test_reg_users_can_not_load_user_management_page()
+    {
+        $user = $this->createUser('guest');
+
+        $response = $this->actingAs($user)->get(route('user.index'));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reg_user_cannot_load_user_edit_page()
+    {
+        $user = $this->createUser('guest');
+        $dummyUser = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('user.edit', $dummyUser->id));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reg_user_cannot_update_a_user()
+    {
+        $user = $this->createUser('guest');
+        $dummyUser = $this->createUser();
+
+        $data['name'] = 'Bob';
+        $data['email'] = 'Attacked@hacker.com';
+        $data['role'] = 1;
+
+        $response = $this->actingAs($user)->post(route('user.update', $dummyUser->id), $data);
+
+        $data['role_id'] = $data['role'];
+        unset($data['role']);
+
+        $this->assertDatabaseMissing('users', $data);
+    }
+
+    public function test_regu_user_cannot_load_role_manager_page()
+    {
+        $user = $this->createUser('guest');
+
+        $response = $this->actingAs($user)->get(route('role.index'));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_regu_user_cannot_load_role_edit_page()
+    {
+        $user = $this->createUser('guest');
+
+        $response = $this->actingAs($user)->get(route('role.edit', 1));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reg_user_cannot_update_a_role()
+    {
+        $user = $this->createUser('guest');
+
+        $data['name'] = 'Pwned';
+        $data['color'] = 'error';
+
+        $response = $this->actingAs($user)->post(route('role.update', 1), $data);
+
+        $this->assertDatabaseMissing('roles', $data);
+    }
 }
