@@ -31,6 +31,26 @@
             </x-info-card>
         @endcan
 
+        <x-info-card :title="__('Blog Stats')">
+            <table class="table w-full">
+                <thead>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Blogs</td>
+                        <td>###</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="justify-end my-4 card-actions">
+                <a href="{{ route('blog.create') }}" class="btn btn-primary">New Blog Entry</a>
+            </div>
+
+        </x-info-card>
+
         @can('viewAny', App\Models\User::class)
             <x-info-card :title="__('User Stats')">
                 <table class="table w-full">

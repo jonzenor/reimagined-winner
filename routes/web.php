@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LifeLogController;
 use Illuminate\Support\Facades\Route;
@@ -56,5 +57,10 @@ Route::name('user.')->middleware('auth')->prefix('user')->group(function () {
     Route::post('edit/{id}/update', [UserController::class, 'update'])->name('update');
 });
 
+Route::name('blog.')->prefix('blog')->group(function () {
+    Route::get('new', [BlogController::class, 'create'])->name('create');
+    Route::post('new/save', [BlogController::class, 'store'])->name('store');
+    Route::get('all', [BlogController::class, 'index'])->name('index');
+});
 
 require __DIR__.'/auth.php';
