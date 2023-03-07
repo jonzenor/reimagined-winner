@@ -90,7 +90,7 @@ class BlogControllerTest extends TestCase
         
         $response->assertSee($blog->title);
         $response->assertSee($blog->date);
-        $response->assertSee($blog->status);
+        $response->assertSee(ucfirst($blog->status));
     }
 
     // Edit blog entries
@@ -141,8 +141,51 @@ class BlogControllerTest extends TestCase
     }
 
     // Create a public blog list page
+    public function test_public_blog_page_loads()
+    {
+        $response = $this->get(route('blogs'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('blog.viewAll');
+    }
+
+    public function test_public_blog_page_lists_all_entries()
+    {
+        $blog = Blog::factory()->create();
+
+        $response = $this->get(route('blogs'));
+
+        $response->assertSee($blog->title);
+    }
+
+    public function test_public_blog_page_has_link_to_view_single_blog()
+    {
+        $blog = Blog::factory()->create();
+
+        $response = $this->get(route('blogs'));
+
+        $response->assertSee(route('blogs.view', $blog->slug));
+    }
 
     // Create a public blog view page
+    public function test_blog_view_page_loads()
+    {
+        $blog = Blog::factory()->create();
+
+        $response = $this->get(route('blogs.view', $blog->slug));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('blog.view');
+    }
+
+    public function test_blog_view_page_loads_blog_post()
+    {
+        $blog = Blog::factory()->create();
+
+        $response = $this->get(route('blogs.view', $blog->slug));
+
+        $response->assertSee($blog->title);
+    }
 
     // Get markdown editor working
 

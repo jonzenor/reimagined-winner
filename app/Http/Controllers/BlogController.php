@@ -20,6 +20,24 @@ class BlogController extends Controller
         ]);
     }
 
+    public function viewAll()
+    {
+        $blogs = Blog::all();
+
+        return view('blog.viewAll', [
+            'blogs' => $blogs,
+        ]);
+    }
+
+    public function view(String $slug)
+    {
+        $blog = Blog::where('slug', $slug)->first();
+
+        return view('blog.view', [
+            'blog' => $blog,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
