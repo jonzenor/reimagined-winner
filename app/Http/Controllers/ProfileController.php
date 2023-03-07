@@ -12,6 +12,7 @@ use App\Models\LifeLog;
 use App\Models\LifeLogCategory;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Blog;
 
 class ProfileController extends Controller
 {
@@ -68,10 +69,12 @@ class ProfileController extends Controller
         $lifeLog['categoryCount'] = LifeLogCategory::count();
         $users['userCount'] = User::count();
         $users['roleCount'] = Role::count();
+        $blogs['blogCount'] = Blog::count();
 
         return view('dashboard', [
             'lifeLog' => $lifeLog,
             'users' => $users,
+            'blogs' => $blogs,
         ]);
     }
 }

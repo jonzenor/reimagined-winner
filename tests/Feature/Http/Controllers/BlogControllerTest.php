@@ -21,6 +21,26 @@ class BlogControllerTest extends TestCase
         $response->assertSee(route('blog.create'));
     }
 
+    public function test_dashboard_has_link_to_blog_index()
+    {
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('dashboard'));
+
+        $response->assertSee(route('blog.index'));
+    }
+
+    public function test_dashboard_shows_blog_count()
+    {
+        $user = $this->createUser();
+        Blog::factory()->create();
+        Blog::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('dashboard'));
+
+        $response->assertSeeInOrder([__('Total Blogs'), "2", __('Manage'), __('New Blog Entry')]);
+    }
+
     // Create a blog creation page
     public function test_blog_create_page_loads()
     {
@@ -128,6 +148,16 @@ class BlogControllerTest extends TestCase
         $response->assertSee("value=\"{$blog->slug}\"", false);
     }
 
+    public function test_blog_edit_form_routes_to_update_page()
+    {
+        $user = $this->createUser();
+        $blog = Blog::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('blog.edit', $blog->id));
+
+        $response->assertSee(route('blog.update', $blog->id));
+    }
+
     public function test_blog_update_saves_data_to_database()
     {
         $user = $this->createUser();
@@ -138,6 +168,17 @@ class BlogControllerTest extends TestCase
 
         $data = $this->translateDataForDB($data);
         $this->assertDatabaseHas('blogs', $data);
+    }
+
+    public function test_blog_update_redirects_to_index_after_save()
+    {
+        $user = $this->createUser();
+        $blog = Blog::factory()->create();
+        $data = $this->getBlogPostData('update');
+
+        $response = $this->actingAs($user)->post(route('blog.update', $blog->id), $data);
+
+        $response->assertRedirect(route('blog.index'));
     }
 
     // Create a public blog list page
@@ -185,6 +226,13 @@ class BlogControllerTest extends TestCase
         $response = $this->get(route('blogs.view', $blog->slug));
 
         $response->assertSee($blog->title);
+    }
+
+    public function test_header_has_link_to_blog_page()
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertSeeInOrder(['navbar-start', route('blogs'), 'navbar-end']);
     }
 
     // Get markdown editor working

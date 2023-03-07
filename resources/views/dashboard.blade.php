@@ -39,8 +39,8 @@
                 <tbody>
                     <tr>
                         <td>Total Blogs</td>
-                        <td>###</td>
-                        <td>&nbsp;</td>
+                        <td>{{ $blogs['blogCount'] }}</td>
+                        <td><a href="{{ route('blog.index') }}" class="link link-accent">Manage</a></td>
                     </tr>
                 </tbody>
             </table>

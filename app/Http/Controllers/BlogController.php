@@ -89,6 +89,8 @@ class BlogController extends Controller
         $blog->fill($request->all());
         $blog->date = $this->translateDateForStorage($request->date);
         $blog->save();
+
+        return redirect()->route('blog.index');
     }
 
     /**

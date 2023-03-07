@@ -13,7 +13,7 @@
     <div class="w-10/12 mx-auto my-4">
 
         <div class="w-1/2 my-4">
-            <form method="post" action="{{ route('blog.store') }}">
+            <form method="post" action="{{ route('blog.update', $blog->id) }}">
                 @csrf
 
                 <div class="my-4">
