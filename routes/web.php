@@ -61,6 +61,8 @@ Route::name('blog.')->prefix('blog')->group(function () {
     Route::get('new', [BlogController::class, 'create'])->name('create');
     Route::post('new/save', [BlogController::class, 'store'])->name('store');
     Route::get('all', [BlogController::class, 'index'])->name('index');
+    Route::get('edit/{id}', [BlogController::class, 'edit'])->name('edit');
+    Route::post('edit/{id}/save', [BlogController::class, 'update'])->name('update');
 });
 
 require __DIR__.'/auth.php';
