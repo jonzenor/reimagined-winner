@@ -14,7 +14,7 @@
                 <span class="text-sm">{{ date('m/d/Y', strtotime($blog->date)) }}</span>
                 
                 <div class="bg-neutral text-neutral-content p-2 my-4 rounded-lg">
-                    {{ $blog->text }}
+                    {!! $blog->html !!}
                 </div>
             </div>
 

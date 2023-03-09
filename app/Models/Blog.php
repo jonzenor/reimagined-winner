@@ -11,5 +11,5 @@ class Blog extends Model
 
     protected $dateFormat = 'Y-m-d';
 
-    protected $fillable = ['title', 'slug', 'date', 'status', 'text'];
+    protected $fillable = ['title', 'slug', 'date', 'status', 'markdown', 'html'];
 }

@@ -65,7 +65,7 @@ class BlogControllerTest extends TestCase
         $response->assertSee('name="date"', false);
         $response->assertSee('name="status"', false);
         $response->assertSee($todaysDate, false);
-        $response->assertSee('name="text"', false);
+        $response->assertSee('name="markdown"', false);
         $response->assertSee('type="submit"', false);
     }
 
@@ -236,6 +236,35 @@ class BlogControllerTest extends TestCase
     }
 
     // Get markdown editor working
+    public function test_blog_view_page_sees_translated_markdown_code_after_update()
+    {
+        $user = $this->createUser();
+        $blog = Blog::factory()->create();
+        $data = $this->getBlogPostData('update');
+        $data['markdown'] = "[My Website](https://jlzenor.com)";
+        $data['slug'] = $blog->slug;
+        $this->actingAs($user)->post(route('blog.update', $blog->id), $data);
+
+        $response = $this->get(route('blogs.view', $blog->slug));
+
+        $response->assertSee(">My Website</a>", false);
+        $response->assertSee("href=\"https://jlzenor.com\"", false);
+    }
+
+    public function test_markdown_adds_custom_classes()
+    {
+        $user = $this->createUser();
+        $blog = Blog::factory()->create();
+        $data = $this->getBlogPostData('update');
+        $data['markdown'] = "[My Website](https://jlzenor.com)";
+        $data['title'] = $blog->title;
+        $data['slug'] = $blog->slug;
+        $this->actingAs($user)->post(route('blog.update', $blog->id), $data);
+
+        $response = $this->get(route('blogs.view', $blog->slug));
+
+        $response->assertSeeInOrder([$blog->title, "<a", "class=\"link link-primary\"", ">My Website</a>"], false);
+    }
 
     // Dispaly blog entries on home page???? Mixed with recent lif log events
 
@@ -252,7 +281,7 @@ class BlogControllerTest extends TestCase
             $data['slug'] = 'test-blog-article';
             $data['date'] = date('d/m/Y');
             $data['status'] = 'draft';
-            $data['text'] = "This is a bunch of text.\n=================\n[My Website](https://jlzenor.com)";
+            $data['markdown'] = "This is a bunch of text.\n=================\n[My Website](https://jlzenor.com)";
         }
 
         return $data;

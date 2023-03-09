@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
-// use GrahamCampbell\Markdown\Facades\Markdown;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
@@ -54,6 +54,7 @@ class BlogController extends Controller
         $blog = new Blog();
         $blog->fill($request->all());
         $blog->date = $this->translateDateForStorage($request->date);
+        $blog->html = $this->parseMarkdown($blog->markdown);
         $blog->save();
 
         return redirect()->route('blog.index');
@@ -88,6 +89,7 @@ class BlogController extends Controller
 
         $blog->fill($request->all());
         $blog->date = $this->translateDateForStorage($request->date);
+        $blog->html = $this->parseMarkdown($blog->markdown);
         $blog->save();
 
         return redirect()->route('blog.index');

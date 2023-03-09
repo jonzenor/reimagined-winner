@@ -21,7 +21,8 @@ class BlogFactory extends Factory
             'slug' => fake()->slug(),
             'date' => fake()->date('m/d/Y', 'now'),
             'status' => 'draft',
-            'text' => fake()->paragraph(),
+            'markdown' => fake()->paragraph(),
+            'html' => fake()->paragraph(),
         ];
     }
 
@@ -30,6 +31,16 @@ class BlogFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'status' => 'published',
+            ];
+        });
+    }
+
+    public function text($text)
+    {
+        return $this->state(function (array $attributes) use ($text) {
+            return [
+                'markdown' => $text,
+                'html' => $text,
             ];
         });
     }

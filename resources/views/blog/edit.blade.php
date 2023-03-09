@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="form-control">
-                    <textarea name="text" class="textarea textarea-primary textarea-md" >{{ $blog->text }}</textarea>
+                    <textarea name="markdown" class="textarea textarea-primary textarea-md" >{!! $blog->markdown !!}</textarea>
                 </div>
 
                 <div class="my-4">

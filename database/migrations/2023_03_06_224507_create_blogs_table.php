@@ -17,7 +17,8 @@ return new class extends Migration
             $table->text('slug');
             $table->date('date');
             $table->text('status');
-            $table->text('text');
+            $table->text('markdown');
+            $table->text('html');
             $table->timestamps();
         });
     }
