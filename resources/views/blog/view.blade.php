@@ -20,6 +20,7 @@
 
         </div>
 
+        <x-page-buttons :secondaryLink="route('blogs')" secondaryText="Back to Article List" />
     </div>
     
 </x-app-layout>

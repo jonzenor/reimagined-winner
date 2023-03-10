@@ -34,7 +34,7 @@
                         $options[] = ['value' => 'published', 'text' => 'Published'];
                     @endphp
 
-                    <x-forms.labeled-dropdown name="status" label="Status" :options="$options" />
+                    <x-forms.labeled-dropdown name="status" label="Status" :options="$options" selected="draft" />
                 </div>
 
                 <div class="form-control">

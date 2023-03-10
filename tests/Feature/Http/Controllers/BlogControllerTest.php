@@ -253,6 +253,7 @@ class BlogControllerTest extends TestCase
 
     public function test_markdown_adds_custom_classes()
     {
+        // This test was made more complicated becasue parsing the markdown now happens on save (so it only has to happen once, not for every view)
         $user = $this->createUser();
         $blog = Blog::factory()->create();
         $data = $this->getBlogPostData('update');
@@ -266,7 +267,31 @@ class BlogControllerTest extends TestCase
         $response->assertSeeInOrder([$blog->title, "<a", "class=\"link link-primary\"", ">My Website</a>"], false);
     }
 
-    // Dispaly blog entries on home page???? Mixed with recent lif log events
+    // Display text (without html tags) on the blog viewAll page
+    public function test_blog_content_shows_up_in_preview()
+    {
+        $text = "This is some short blog content";
+        $blog = Blog::factory()->text($text)->create();
+
+        $response = $this->get(route('blogs'));
+
+        $response->assertSee($text);
+    }
+
+    public function test_blog_content_is_truncated_and_does_it_via_config_var()
+    {
+        \Config::set('blog.truncate_characters', 10);
+        $text = "This is 10";
+        $extra = "and this is way more than 10 characters.";
+        $blog = Blog::factory()->text($text . $extra)->create();
+
+        $response = $this->get(route('blogs'));
+
+        $response->assertSee($text);
+        $response->assertDontSee($extra);
+    }
+
+    // Dispaly blog entries on home page???? Mixed with recent life log events
 
     // Add security to the blog dashboard pages
 
